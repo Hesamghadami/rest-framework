@@ -1,12 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, AbstractBaseUser,BaseUserManager,PermissionsMixin
 
+# Create your models here.
 
+class CustumUser(AbstractUser):
+    image = models.ImageField(upload_to='user', default='user.png')
 
-# class CustomeUser(AbstractUser):
-#     id_code = models.CharField(max_length=10,null=True, blank=True)
-#     mobile = models.CharField(max_length=20,null=True, blank=True)
-#     image = models.ImageField(upload_to='users', default='user.jpg')
+    def __str__(self):
+        return self.username
+
+# Create your models here.
 
 class CustomeBaseUserManager(BaseUserManager):
     def create_user(self, email, password, **extra_fields):
@@ -30,7 +33,7 @@ class CustomeBaseUserManager(BaseUserManager):
 
 
 
-class CustomeUser(AbstractBaseUser, PermissionsMixin):
+class CustumUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     username  = models.CharField(max_length=100, unique=True)
     is_staff = models.BooleanField(default=False)

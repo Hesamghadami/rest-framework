@@ -1,0 +1,162 @@
+{% extends 'inherit/base.html' %}
+{% load static %}
+{% load compress %}
+{% block 'title' %}Add-goods{% endblock 'title' %}
+{% block 'content' %}
+
+    <!-- ======= Breadcrumbs ======= -->
+    <section id="breadcrumbs" class="breadcrumbs">
+      <div class="container">
+
+        <ol>
+          <li><a href="{% url 'home:home'%}">Home</a></li>
+          <li>Add A New Good</li>
+        </ol>
+        <h2>Add A New Good</h2>
+
+      </div>
+    </section><!-- End Breadcrumbs -->
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+     <title>Add New Post</title>
+     <style>
+      body {
+       background-color: #f2f2f2;
+       font-family: Arial, sans-serif;
+      }
+      
+      h1 {
+       color: #0077b3;
+       text-align: center;
+       margin-top: 50px;
+      }
+      
+      form {
+       background-color: #ffffff;
+       border-radius: 5px;
+       padding: 20px;
+       margin-top: 30px;
+       max-width: 500px;
+       margin-left: auto;
+       margin-right: auto;
+      }
+      
+      label {
+       display: block;
+       font-weight: bold;
+       margin-bottom: 10px;
+      }
+      
+      input[type="text"], textarea {
+       width: 100%;
+       padding: 10px;
+       border-radius: 5px;
+       border: none; 
+                box-shadow:none; 
+                border-bottom:solid 1px #0077b3; 
+                margin-bottom:20px
+            }
+            
+            input[type="submit"] {
+             background-color:#0077b3; 
+             color:#fff; 
+             padding-left :20px; 
+             padding-right :20px; 
+             padding-top :10px; 
+             padding-bottom :10px; 
+             border:none; 
+             border-radius :5px
+            }
+            
+            input[type="submit"]:hover{
+                background-color:#005580
+            }
+            
+            .form-group{
+                margin-bottom :20px
+            }
+            
+            .form-group label{
+                display:block
+            }
+            
+            .form-group input[type="text"], .form-group textarea{
+                width :100%; padding :10px; border-radius :5px; border:none; box-shadow:none; border-bottom:solid 1px #0077b3
+            }
+            
+            .form-group input[type="text"]:focus, .form-group textarea:focus{
+                outline:none;
+                border-color:#005580;
+                box-shadow:0 0 5px #005580
+            }
+     </style>
+    </head>
+    <body>
+     <h1>Add New Post</h1>
+     <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+      <div class="form-group">
+       <label for="{{ form.title.id_for_label }}">Title:</label>
+       <input type="text" id="title" name="title" placeholder="Enter post title" required>
+      </div>
+      <div class="form-group">
+        <label for="{{ form.client_url.id_for_label }}">Your website:</label>
+        <input type="text" id="client_url" name="client_url" placeholder="Enter client_url" required>
+       </div>
+      <div class="form-group">
+       {% comment %} <label for="{{ form.client.id_for_label }}">Client:</label> {% endcomment %}
+       <input type="hidden" value="{{request.user.id}}" id="client" name="client" placeholder="Enter author name" required>
+      </div>
+      
+      <div class="form-group">
+       <label for="{{ form.content.id_for_label }}">Content:</label>
+       <textarea id="content" name="content" rows="10" placeholder="Enter post content" required></textarea>
+            </div>
+
+      <div class="form-group">
+        <label for="{{ form.image1.id_for_label }}">Image 1:</label>
+        <input type="file" id="image1" name="image1" required>
+        </div>
+
+      <div class="form-group">
+        <label for="{{ form.image2.id_for_label }}">Image 2:</label>
+        <input type="file" id="image2" name="image2" required>
+        </div>
+
+
+      <div class="form-group">
+        <label for="{{ form.image3.id_for_label }}">Image 3:</label>
+        <input type="file" id="image3" name="image3" required>
+        </div>
+
+
+      <div class="form-group">
+            <label for="{{ form.published_date.id_for_label }}">Published Date:</label>
+            <input type="date" id="published_date" name="published_date" required> 
+           </div>
+
+      <div class="form-group">
+        <label for="{{ form.category.id_for_label }}">Category:</label>
+        <select id="category" name="category">
+            {% for  cat in category  %}
+          <option value="{{cat.id}}">{{cat.name}}</option>
+          {% endfor %}
+        </select>
+            </div>
+        
+    
+            <input type ="submit" value ="Submit Post">
+        </form>
+    
+    </body>
+    
+    </html> 
+
+
+
+
+
+    <!-- ======= Footer ======= -->
+    {% endblock 'content' %}

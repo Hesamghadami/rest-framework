@@ -1,0 +1,127 @@
+{% extends 'inherit/base.html' %}
+{% load static %}
+{% load compress %}
+{% block 'title' %}Goods{% endblock 'title' %}
+{% block 'content' %}
+  <main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <section id="breadcrumbs" class="breadcrumbs">
+      <div class="container">
+
+        <ol>
+          <li><a href="{% url 'home:home'%}">Home</a></li>
+          <li>Goods</li>
+        </ol>
+        <h2>Goods</h2>
+
+      </div>
+    </section><!-- End Breadcrumbs -->
+
+
+
+    <section id="portfolio" class="portfolio">
+        <div class="container" data-aos="fade-up">
+  
+          <div class="section-title">
+            <h2>Goods</h2>
+            <p>The best and newest stuff around world.</p>
+          </div>
+          <br>
+          <style>
+            .element{
+              position: absolute:
+              left: 38%;
+              transform:translate(38%);
+            }
+          </style>
+          <form class="element" action="{% url 'blog:blog_home_with_search' %}?search=">
+            <input name="search" placeholder="Search for stuff" type="text"/>
+             
+            <button type="submit" style="background-color:blue;color:white;">Search</button>
+          </form>
+          <br>
+
+
+          <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="200">
+            {% for post in posts %}
+              <div class="col-lg-4 col-md-6 portfolio-item filter-app">
+                <div class="portfolio-img"><img src={{post.image1.url}} class="img-fluid" alt=""></div>
+                <div class="portfolio-info">
+                  <h4>{{post.title}}</h4>
+                  {% for cat in post.category.all  %}
+                    <p><a href="{% url 'blog:blog_home_with_category' cat=cat.name %}">{{cat.name}}</a></p>
+                  {% endfor %}
+                  <p><a href="{% url 'blog:blog_home_with_username' username=post.client.username %}">{{post.client.username}}</a> </p>
+                  <a href={{post.image1.url}} data-gallery="portfolioGallery" class="portfolio-lightbox preview-link" title=''><i class="bx bx-plus"></i></a>
+                  <a href="{% url 'blog:blog_single' pid=post.id %}" class="details-link" title="More Details"><i class="bx bx-link"></i></a>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+  
+            <style>
+              .pagination {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+              
+              .page-numbers {
+                display: inline-block;
+                padding: 5px;
+                margin: 0px 5px;
+                border-radius: 5px;
+              }
+              
+              .current {
+                background-color: blue;
+              }
+              
+              .prev,
+              .next {
+                display: inline-block;
+                padding: 5px;
+              }
+            </style>
+
+
+            <div class="pagination">
+              {% if  posts.has_previous %}
+              <a href="?page={{posts.previous_page_number}}" class="prev">Previous</a>
+              {% endif %}
+
+              {% for i in posts.paginator.page_range %}
+                {% if  posts.number == i %}
+                  <span> <a href="?page={{i}}" class="page-numbers">{{i}}</a></span>
+                {% else %}
+                  <span> <a href="?page={{i}}" class="page-numbers">{{i}}</a></span>
+                {% endif %}
+              {% endfor %}
+
+
+              {% if  posts.has_next %}
+                <a href="?page={{posts.next_page_number}}" class="next">Next</a>
+              {% endif %}
+            </div>
+	
+
+
+        </div>
+      </section><!-- End Portfolio Section -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ======= Footer ======= -->
+{% endblock 'content' %}

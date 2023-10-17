@@ -1,18 +1,18 @@
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from .models import CustomeUser
-
+from django.contrib.auth.models import User
+from .models import CustumUser
 from captcha.fields import CaptchaField
 
 
-class CustomUserCreation(UserCreationForm):
-
+class SignUpForm(UserCreationForm):
+    email = forms.EmailField()
+    image = forms.ImageField()
 
 
     class Meta:
-        model = CustomeUser
-        fields = [ 'email', 'password1', 'password2']
-
+        model = CustumUser
+        fields = ['email','password1', 'password2']
 
 class CaptchaForm(forms.Form):
     captcha = CaptchaField()
