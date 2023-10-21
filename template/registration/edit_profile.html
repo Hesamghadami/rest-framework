@@ -13,7 +13,7 @@
   
       <ol>
         <li><a href="{% url 'home:home' %}">Home</a></li>
-        <li>Sign Up</li>
+        <li>Compelete profile</li>
       </ol>
   
   
@@ -34,40 +34,43 @@
       {% csrf_token %}
         <ul class="login-nav">
             <li class="login-nav__item active">
-                <a href="#">Sign Up</a>
-            </li>
-            <li class="login-nav__item">
-                <a href="{% url 'accounts:login'%}">Sign In</a>
+                <a href="#">Compelete profile</a>
             </li>
         </ul>
 
-        <label for="login-input-user" class="login__label">
-            Username:
-        </label>
-        <input  name="username" id="id_username" class="login__input" type="text" required/>
+        <input  name="username" id="id_username" class="login__input" type="hidden" required/>
 
+
+        <label for="login-input-user" class="login__label">
+            First name:
+        </label>
+        <input  name="first_name" id="id_first_name" class="login__input" type="text" required/>
+
+        <label for="login-input-user" class="login__label">
+            Last name:
+        </label>
+        <input  name="last_name" id="id_last_name" class="login__input" type="text" required/>
 
         <label for="login-input-email" class="login__label">
-            Email:
+            Telephone:
         </label>
-        <input name="email" id="id_email" placeholder="Email Address" onfocus="this.placeholder = ''"
-        onblur="this.placeholder = 'Email Address '" required="" type="email" class="login__input">
+        <input name="phone" id="id_phone" placeholder="Email Address" 
+         required="" type="tel" class="login__input">
 
 
         <label for="login-input-password" class="login__label">
-            Password:
+            Address:
         </label>
-        <input  name="password1" id="id_password1" class="login__input" type="password" required/>
+        <textarea name="address" id="id_address"  required></textareaname>
+
 
         <label for="login-input-password" class="login__label">
-            Password Confirmation:
-       </label>
-       <input  name="password2" id="id_password2" class="login__input" type="password" required/>
-
-      
+            Profile Photo:
+        </label>
+        <input type="file"  name="image" accept="image/*" id="id_image" required>
         
 
-        <button href ="{% url 'accounts:profile' pid=profile.user.id %}" type='submit' class="login__submit" >Sign Up</button>
+        <button type='submit' class="login__submit" >Compelete</button>
     </form>
     <a href="{% url 'accounts:login' %}" class="login__forgot">Already Have An Account? Sign In</a>
     <br>

@@ -1,18 +1,38 @@
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django import forms
-from django.contrib.auth.models import User
-from .models import CustumUser
-from captcha.fields import CaptchaField
+from django.contrib.auth.forms import UserCreationForm
+from .models import CustomeUser, Profile
 
 
-class SignUpForm(UserCreationForm):
-    email = forms.EmailField()
-    image = forms.ImageField()
+
+class CustomUserCreation(UserCreationForm):
+
 
 
     class Meta:
-        model = CustumUser
-        fields = ['email','password1', 'password2']
+        model = CustomeUser
+        fields = [ 'email','username', 'password1', 'password2']
 
-class CaptchaForm(forms.Form):
-    captcha = CaptchaField()
+
+
+
+class AuthenticationForm(forms.Form):
+    """
+    Base class for authenticating users. Extend this to get a form that accepts
+    username/password logins.
+    """
+
+    email = forms.EmailField()
+    password = forms.CharField(
+        label=("Password"),
+        strip=False,
+        widget=forms.PasswordInput(attrs={"autocomplete": "current-password"}),
+    )
+
+
+class EditProfile(forms.ModelForm):
+
+
+
+    class Meta:
+        model = Profile
+        fields = [ 'user','first_name', 'last_name', 'phone', 'address', 'image']

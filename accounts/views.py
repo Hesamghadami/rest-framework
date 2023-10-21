@@ -4,37 +4,27 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .forms import *
-from .models import CustumUser
+from .models import *
 from django.http import HttpResponseRedirect
 
 
 
-
-def Login(req) :
+def Login(req):
     if req.user.is_authenticated:
         return redirect('/')
-    
     elif req.method == 'GET':
         form = AuthenticationForm()
-        captcha = CaptchaForm()
-        return render(req, 'registration/login.html', {'form': form, 'captcha': captcha})
-    
+        return render(req,'registration/login.html', context={'form': form})
     elif req.method == 'POST':
-        captcha = CaptchaForm(req.POST)
-        if captcha.is_valid():
             email = req.POST.get('email')
-            password = req.POST.get('password')
-            user = authenticate(email=email,password=password)
+            password = req.POST.get('password')      
+            user = authenticate(email=email, password=password)
             if user is not None:
-                login(req, user)
+                login(req,user)
                 return redirect('/')
-            else :
-                messages.add_message(req, messages.ERROR , 'username or password is not valid ! ...')
-                return redirect('accounts:login')
-        else : 
-            messages.add_message(req, messages.ERROR , 'captcha not valid')
-            return redirect('accounts:login')
-
+            else:
+                messages.add_message(req, messages.ERROR, 'Invalid email or password')
+                return redirect(req.path_info)
 @login_required
 def Logout(req) :
     logout(req)
@@ -43,20 +33,35 @@ def Logout(req) :
 
 
 def signup(req):
-    if req.method == 'GET':
-        form = SignUpForm()
-        return render(req, 'registration/signup.html', {'form': form})
-    
-    elif req.method == 'POST':
-            form = SignUpForm(req.POST, req.FILES)
-            print (req.POST)
+    if req.user.is_authenticated:
+        return redirect('/')
+    elif req.method == 'GET':
+        form = CustomUserCreation()
+        return render(req,'registration/signup.html', context={'form': form})
+    else:
+            form = CustomUserCreation(req.POST,req.FILES)
             if form.is_valid():
                 form.save()
-                return redirect('accounts:login')
-        
+                email = req.POST.get('email')
+                password = req.POST.get('password1')
+                user = authenticate(email=email, password=password)
+                login(req,user)
+                return redirect('accounts:profile')
+
             else:
-                messages.add_message(req,messages.ERROR,'Input data is not valid.')
-                return redirect('accounts:login')
+                messages.add_message(req, messages.ERROR, 'Invalid email or password')
+                return redirect(req.path_info)
+            
+def edit_profile(req,pid):
+     prof = Profile.objects.get(id=pid)
+     if req.method == 'GET':
+          form = EditProfile(instance=prof)
+          return render(req,'registration/edit_profile.html', context={'form': form})
+     elif req.method == 'POST':
+          form = EditProfile(req.POST, req.FILES ,instance=prof)
+          if form.is_valid():
+               form.save()
+               return redirect('/') 
 
         
 # Create your views here.
