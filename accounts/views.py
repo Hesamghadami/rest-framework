@@ -53,12 +53,12 @@ def signup(req):
             return redirect(req.path_info)
             
 def edit_profile(req):
-     
      if req.method == 'GET':
           form = EditProfile(instance=req.user)
           return render(req,'registration/edit_profile.html', context={'form': form})
      elif req.method == 'POST':
           form = EditProfile(req.POST, req.FILES ,instance=req.user)
+          print(req.POST)
           if form.is_valid():
                form.save()
                return redirect('/') 
