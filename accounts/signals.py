@@ -10,3 +10,7 @@ def create_user_profile(sender, instance, created, **kwargs):
         Profile.objects.create(user=instance)
 
 
+@receiver(post_save, sender=Profile)
+def edit_user_profile(sender, instance, created, **kwargs):
+    if created:
+        CustomeUser.objects.create(email=instance.user, is_verified=True)

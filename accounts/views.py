@@ -39,26 +39,26 @@ def signup(req):
         form = CustomUserCreation()
         return render(req,'registration/signup.html', context={'form': form})
     else:
-            form = CustomUserCreation(req.POST,req.FILES)
-            if form.is_valid():
-                form.save()
-                email = req.POST.get('email')
-                password = req.POST.get('password1')
-                user = authenticate(email=email, password=password)
-                login(req,user)
-                return redirect('accounts:profile')
+        form = CustomUserCreation(req.POST)
+        if form.is_valid():
+            form.save()
+            email = req.POST.get('email')
+            password = req.POST.get('password1')
+            user = authenticate(email=email, password=password)
+            login(req,user)
+            return redirect('accounts:profile')
 
-            else:
-                messages.add_message(req, messages.ERROR, 'Invalid email or password')
-                return redirect(req.path_info)
+        else:
+            messages.add_message(req, messages.ERROR, 'Invalid email or password')
+            return redirect(req.path_info)
             
-def edit_profile(req,pid):
-     prof = Profile.objects.get(id=pid)
+def edit_profile(req):
+     
      if req.method == 'GET':
-          form = EditProfile(instance=prof)
+          form = EditProfile(instance=req.user)
           return render(req,'registration/edit_profile.html', context={'form': form})
      elif req.method == 'POST':
-          form = EditProfile(req.POST, req.FILES ,instance=prof)
+          form = EditProfile(req.POST, req.FILES ,instance=req.user)
           if form.is_valid():
                form.save()
                return redirect('/') 
